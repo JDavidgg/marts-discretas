@@ -1,0 +1,73 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib_venn import venn2
+
+def tabla_relacion(relacion):
+    for par in relacion:
+        print(par[0], "->", par[1])
+
+def digrafo_relacion(relacion):
+    G = nx.DiGraph()
+    G.add_edges_from(relacion)
+    nx.draw(G, with_labels=True, arrows=True)
+    plt.show()
+
+def diagrama_venn_relacion(relacion):
+    set1 = set([x[0] for x in relacion])
+    set2 = set([x[1] for x in relacion])
+    venn2([set1, set2], ('Set 1', 'Set 2'))
+    plt.show()
+
+def matriz_relacion(relacion):
+    elementos = sorted(set([x for tupla in relacion for x in tupla]))
+    matriz = np.zeros((len(elementos), len(elementos)))
+    for par in relacion:
+        matriz[elementos.index(par[0])][elementos.index(par[1])] = 1
+    plt.matshow(matriz, cmap='binary')
+    plt.xticks(np.arange(len(elementos)), elementos)
+    plt.yticks(np.arange(len(elementos)), elementos)
+    plt.xlabel('Dominio')
+    plt.ylabel('Codominio')
+    plt.show()
+
+def plano_cartesiano_relacion(relacion):
+    x = [par[0] for par in relacion]
+    y = [par[1] for par in relacion]
+    plt.scatter(x, y)
+    plt.xlabel('Dominio')
+    plt.ylabel('Codominio')
+    plt.title('Plano Cartesiano')
+    plt.grid()
+    plt.show()
+
+# Función principal
+def main():
+    relacion = []
+    continuar = True
+
+    while continuar:
+        opcion = input("Ingrese un par ordenado (o escriba 'fin' para terminar): ")
+        if opcion.lower() == 'fin':
+            continuar = False
+        else:
+            par = tuple(opcion.split(','))
+            relacion.append(par)
+
+    tipo_grafico = input("Elija el tipo de representación gráfica (tabla, digrafo, diagrama de Venn, matriz, plano cartesiano): ")
+
+    if tipo_grafico.lower() == 'tabla':
+        tabla_relacion(relacion)
+    elif tipo_grafico.lower() == 'digrafo':
+        digrafo_relacion(relacion)
+    elif tipo_grafico.lower() == 'diagrama de venn':
+        diagrama_venn_relacion(relacion)
+    elif tipo_grafico.lower() == 'matriz':
+        matriz_relacion(relacion)
+    elif tipo_grafico.lower() == 'plano cartesiano':
+        plano_cartesiano_relacion(relacion)
+    else:
+        print("Tipo de representación gráfica no válido.")
+
+if __name__ == "__main__":
+    main()
