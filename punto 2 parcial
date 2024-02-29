@@ -1,0 +1,49 @@
+def es_reflexiva(pares):
+    for elemento in pares:
+        if (elemento[0], elemento[0]) not in pares:
+            return False
+    return True
+
+def es_simetrica(pares):
+    for a, b in pares:
+        if (b, a) not in pares:
+            return False
+    return True
+
+def es_antisimetrica(pares):
+    for a, b in pares:
+        if (b, a) in pares and a != b:
+            return False
+    return True
+
+def es_transitiva(pares):
+    for a, b in pares:
+        for c, d in pares:
+            if b == c and (a, d) not in pares:
+                return False
+    return True
+
+def determinar_relacion(pares):
+    reflexiva = es_reflexiva(pares)
+    simetrica = es_simetrica(pares)
+    antisimetrica = es_antisimetrica(pares)
+    transitiva = es_transitiva(pares)
+
+    if reflexiva:
+        print("La relación es REFLEXIVA.")
+    if simetrica:
+        print("La relación es SIMÉTRICA.")
+    if antisimetrica:
+        print("La relación es ANTISIMÉTRICA.")
+    if transitiva:
+        print("La relación es TRANSITIVA.")
+
+# Solicitar entrada de pares ordenados
+n = int(input("Ingrese el número de pares ordenados en la relación: "))
+pares = []
+for i in range(n):
+    par = tuple(input(f"Ingrese el par ordenado {i+1} separado por coma (Ejemplo: 1,2): ").split(","))
+    pares.append(par)
+
+# Determinar el tipo de relación
+determinar_relacion(pares)
