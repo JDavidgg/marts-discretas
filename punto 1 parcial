@@ -6,7 +6,7 @@ def evaluate_proposition(expression, truth_values):
     for values in itertools.product([False, True], repeat=len(truth_values)):
         assignment = dict(zip(truth_values, values))
         truth_table_row = [f"{assignment[var]}" for var in truth_values]
-        truth_table_row.append(int(eval(expression, assignment)))
+        truth_table_row.append(str(int(eval(expression, assignment))))  # Convertir el resultado a cadena
         truth_table.append(truth_table_row)
     return truth_table
 
