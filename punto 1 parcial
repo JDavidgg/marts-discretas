@@ -1,0 +1,39 @@
+import itertools
+
+def evaluate_proposition(expression, truth_values):
+    expression = expression.replace('¬', 'not ').replace('∧', 'and').replace('∨', 'or').replace('→', '=>').replace('↔', '<=>')
+    truth_table = []
+    for values in itertools.product([False, True], repeat=len(truth_values)):
+        assignment = dict(zip(truth_values, values))
+        truth_table_row = [f"{assignment[var]}" for var in truth_values]
+        truth_table_row.append(int(eval(expression, assignment)))
+        truth_table.append(truth_table_row)
+    return truth_table
+
+def analyze_truth_table(truth_table):
+    result = all(row[-1] for row in truth_table)
+    if result:
+        return "Tautología"
+    elif not any(row[-1] for row in truth_table):
+        return "Falacia"
+    else:
+        return "Contingencia"
+
+def print_truth_table(truth_table, truth_values):
+    print("Tabla de Verdad:")
+    headers = ' | '.join(truth_values) + ' | ' + 'Resultado'
+    print(headers)
+    print('-' * len(headers))
+    for row in truth_table:
+        print(' | '.join(row))
+
+# Función principal
+def main():
+    expression = input("Ingrese la proposición compuesta (molecular): ")
+    variables = sorted(set(char for char in expression if char.isalpha()))
+    truth_table = evaluate_proposition(expression, variables)
+    print_truth_table(truth_table, variables)
+    print("La proposición es:", analyze_truth_table(truth_table))
+
+if __name__ == "__main__":
+    main()
