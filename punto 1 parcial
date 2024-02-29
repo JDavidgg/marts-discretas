@@ -3,11 +3,14 @@ import itertools
 def evaluate_proposition(expression, truth_values):
     expression = expression.replace('¬', 'not ').replace('∧', 'and').replace('∨', 'or').replace('→', '=>').replace('↔', '<=>')
     truth_table = []
+    
     for values in itertools.product([False, True], repeat=len(truth_values)):
         assignment = dict(zip(truth_values, values))
-        truth_table_row = [f"{assignment[var]}" for var in truth_values]
-        truth_table_row.append(str(int(eval(expression, assignment))))  # Convertir el resultado a cadena
+        result = eval(expression, assignment)
+        truth_table_row = [assignment[var] for var in truth_values]
+        truth_table_row.append(int(result))
         truth_table.append(truth_table_row)
+        
     return truth_table
 
 def analyze_truth_table(truth_table):
@@ -25,6 +28,7 @@ def print_truth_table(truth_table, truth_values):
     print(headers)
     print('-' * len(headers))
     for row in truth_table:
+        row = [str(item) for item in row]  # Convertir todos los elementos a cadenas de texto
         print(' | '.join(row))
 
 # Función principal
